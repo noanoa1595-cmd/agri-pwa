@@ -1,0 +1,235 @@
+/* ============================================================
+   農業記録PWA - スタイルシート
+   ゆずの会カラー：深緑 #2d6a4f / ライトグリーン #52b788
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --green-dark:   #1b4332;
+  --green-main:   #2d6a4f;
+  --green-mid:    #40916c;
+  --green-light:  #52b788;
+  --green-pale:   #d8f3dc;
+  --text-dark:    #1a1a2e;
+  --text-mid:     #444;
+  --text-light:   #888;
+  --bg:           #f4f7f5;
+  --white:        #ffffff;
+  --danger:       #e63946;
+  --radius:       10px;
+}
+
+html { font-size: 16px; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN',
+               'Noto Sans JP', 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text-dark);
+  min-height: 100vh;
+}
+
+/* ===== Header ===== */
+header {
+  background: var(--green-main);
+  color: var(--white);
+  padding: 14px 16px 10px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+header h1 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+#status-bar {
+  min-height: 20px;
+  margin-top: 4px;
+}
+
+#status-text {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+#status-text.success { color: #95d5b2; }
+#status-text.error   { color: #ffb3b3; }
+#status-text.sending { color: #ffe08a; }
+
+/* ===== Navigation ===== */
+nav {
+  display: flex;
+  background: var(--green-dark);
+  overflow-x: auto;
+  scrollbar-width: none;
+  position: sticky;
+  top: 62px;
+  z-index: 99;
+}
+
+nav::-webkit-scrollbar { display: none; }
+
+.tab {
+  flex: 1;
+  min-width: 72px;
+  padding: 11px 6px;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: #95d5b2;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.tab:hover { color: var(--white); }
+
+.tab.active {
+  color: var(--white);
+  border-bottom-color: var(--green-light);
+}
+
+/* ===== Form Section ===== */
+.form-section {
+  padding: 20px 16px 40px;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.form-section h2 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--green-main);
+  margin-bottom: 18px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--green-pale);
+}
+
+.hidden { display: none !important; }
+
+/* ===== Form Fields ===== */
+.field {
+  margin-bottom: 14px;
+}
+
+label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-mid);
+  margin-bottom: 5px;
+  letter-spacing: 0.02em;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1.5px solid #dde5e0;
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-family: inherit;
+  background: var(--white);
+  color: var(--text-dark);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--green-light);
+  box-shadow: 0 0 0 3px rgba(82, 183, 136, 0.2);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+/* ===== 自動計算表示 ===== */
+.preview-field label {
+  color: var(--text-light);
+}
+
+.calc-display {
+  padding: 11px 12px;
+  background: var(--green-pale);
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--green-dark);
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+/* ===== Submit Button ===== */
+.btn-submit {
+  width: 100%;
+  padding: 15px;
+  margin-top: 10px;
+  background: var(--green-main);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-submit:hover  { background: var(--green-mid); }
+.btn-submit:active {
+  background: var(--green-dark);
+  transform: scale(0.98);
+}
+
+.btn-submit:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}
+
+/* ===== Toast通知 ===== */
+#toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--green-dark);
+  color: var(--white);
+  padding: 12px 24px;
+  border-radius: 24px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  transition: transform 0.3s ease;
+  z-index: 999;
+  white-space: nowrap;
+}
+
+#toast.show { transform: translateX(-50%) translateY(0); }
+#toast.error { background: var(--danger); }

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#2d6a4f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="農業記録">
+  <title>農業記録 - ゆずの会</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+  <header>
+    <h1>🌿 農業記録</h1>
+    <div id="status-bar">
+      <span id="status-text"></span>
+    </div>
+  </header>
+
+  <nav>
+    <button class="tab active" data-tab="worklog" onclick="showTab('worklog', this)">作業日誌</button>
+    <button class="tab" data-tab="harvest" onclick="showTab('harvest', this)">収穫記録</button>
+    <button class="tab" data-tab="soil" onclick="showTab('soil', this)">土壌管理</button>
+    <button class="tab" data-tab="input" onclick="showTab('input', this)">施肥灌水</button>
+  </nav>
+
+  <!-- ===== 作業日誌 ===== -->
+  <section id="tab-worklog" class="form-section">
+    <h2>作業日誌</h2>
+    <form id="form-worklog" onsubmit="submitWorklog(event)">
+      <div class="field">
+        <label for="wl-date">日付</label>
+        <input type="date" id="wl-date" required>
+      </div>
+      <div class="field">
+        <label for="wl-field">圃場</label>
+        <select id="wl-field" required>
+          <option value="F001">米川A</option>
+          <option value="F002">米川B</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="wl-type">作業種別</label>
+        <select id="wl-type" required>
+          <option>収穫</option>
+          <option>施肥</option>
+          <option>剪定</option>
+          <option>草刈り</option>
+          <option>灌水</option>
+          <option>防除</option>
+          <option>定植</option>
+          <option>土壌管理</option>
+          <option>その他</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="wl-duration">作業時間（h）</label>
+        <input type="number" id="wl-duration" step="0.5" min="0.5" max="24" placeholder="例：2.5" required>
+      </div>
+      <div class="field">
+        <label for="wl-worker">作業者</label>
+        <input type="text" id="wl-worker" value="井上尚敏" required>
+      </div>
+      <div class="field">
+        <label for="wl-weather">天気</label>
+        <select id="wl-weather">
+          <option>晴</option>
+          <option>晴のち曇</option>
+          <option>曇</option>
+          <option>曇のち雨</option>
+          <option>雨</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="wl-memo">メモ</label>
+        <textarea id="wl-memo" rows="3" placeholder="気づいたことを記録..."></textarea>
+      </div>
+      <button type="submit" class="btn-submit">記録する</button>
+    </form>
+  </section>
+
+  <!-- ===== 収穫記録 ===== -->
+  <section id="tab-harvest" class="form-section hidden">
+    <h2>収穫記録</h2>
+    <form id="form-harvest" onsubmit="submitHarvest(event)">
+      <div class="field">
+        <label for="hv-date">収穫日</label>
+        <input type="date" id="hv-date" required>
+      </div>
+      <div class="field">
+        <label for="hv-field">圃場</label>
+        <select id="hv-field" required>
+          <option value="F001">米川A</option>
+          <option value="F002">米川B</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="hv-crop">作物</label>
+        <select id="hv-crop" required>
+          <option value="C001">柚子</option>
+          <option value="C002">トマト</option>
+          <option value="C003">メロン</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="hv-total">総収量（kg）</label>
+        <input type="number" id="hv-total" step="0.1" min="0" placeholder="例：85.5" required>
+      </div>
+      <div class="field">
+        <label for="hv-premium">秀品量（kg）</label>
+        <input type="number" id="hv-premium" step="0.1" min="0" placeholder="例：70.0" required>
+      </div>
+      <div class="field preview-field">
+        <label>秀品率（自動計算）</label>
+        <div id="premium-rate-display" class="calc-display">—</div>
+      </div>
+      <div class="field">
+        <label for="hv-price">販売単価（円/kg）</label>
+        <input type="number" id="hv-price" step="1" min="0" placeholder="例：2000">
+      </div>
+      <div class="field preview-field">
+        <label>売上（自動計算）</label>
+        <div id="revenue-display" class="calc-display">—</div>
+      </div>
+      <div class="field">
+        <label for="hv-dest">販売先</label>
+        <input type="text" id="hv-dest" placeholder="例：JA、道の駅">
+      </div>
+      <div class="field">
+        <label for="hv-memo">メモ</label>
+        <textarea id="hv-memo" rows="2"></textarea>
+      </div>
+      <button type="submit" class="btn-submit">記録する</button>
+    </form>
+  </section>
+
+  <!-- ===== 土壌管理 ===== -->
+  <section id="tab-soil" class="form-section hidden">
+    <h2>土壌管理</h2>
+    <form id="form-soil" onsubmit="submitSoil(event)">
+      <div class="field">
+        <label for="sl-date">測定日</label>
+        <input type="date" id="sl-date" required>
+      </div>
+      <div class="field">
+        <label for="sl-field">圃場</label>
+        <select id="sl-field" required>
+          <option value="F001">米川A</option>
+          <option value="F002">米川B</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="sl-point">測定ポイント</label>
+        <input type="text" id="sl-point" placeholder="例：A-1" required>
+      </div>
+      <div class="field">
+        <label for="sl-ph">pH</label>
+        <input type="number" id="sl-ph" step="0.1" min="0" max="14" placeholder="例：6.2" required>
+      </div>
+      <div class="field">
+        <label for="sl-ec">EC（mS/cm）</label>
+        <input type="number" id="sl-ec" step="0.01" min="0" placeholder="例：0.8">
+      </div>
+      <div class="field">
+        <label for="sl-moisture">土壌水分（%）</label>
+        <input type="number" id="sl-moisture" step="1" min="0" max="100" placeholder="例：35">
+      </div>
+      <div class="field">
+        <label for="sl-temp">土壌温度（℃）</label>
+        <input type="number" id="sl-temp" step="0.1" placeholder="例：18.5">
+      </div>
+      <div class="field">
+        <label for="sl-memo">メモ</label>
+        <textarea id="sl-memo" rows="2"></textarea>
+      </div>
+      <button type="submit" class="btn-submit">記録する</button>
+    </form>
+  </section>
+
+  <!-- ===== 施肥灌水 ===== -->
+  <section id="tab-input" class="form-section hidden">
+    <h2>施肥灌水</h2>
+    <form id="form-input" onsubmit="submitInput(event)">
+      <div class="field">
+        <label for="in-date">実施日</label>
+        <input type="date" id="in-date" required>
+      </div>
+      <div class="field">
+        <label for="in-field">圃場</label>
+        <select id="in-field" required>
+          <option value="F001">米川A</option>
+          <option value="F002">米川B</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="in-type">種別</label>
+        <select id="in-type" required>
+          <option>灌水</option>
+          <option>液肥</option>
+          <option>固形肥料</option>
+          <option>土壌改良材</option>
+          <option>農薬</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="in-product">資材名</label>
+        <input type="text" id="in-product" placeholder="例：NK化成、石灰" required>
+      </div>
+      <div class="field">
+        <label for="in-amount">量</label>
+        <input type="number" id="in-amount" step="0.1" min="0" placeholder="例：5.0" required>
+      </div>
+      <div class="field">
+        <label for="in-unit">単位</label>
+        <select id="in-unit">
+          <option>kg</option>
+          <option>L</option>
+          <option>ml</option>
+          <option>袋</option>
+          <option>本</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="in-purpose">目的</label>
+        <input type="text" id="in-purpose" placeholder="例：春肥、pH調整">
+      </div>
+      <div class="field">
+        <label for="in-memo">メモ</label>
+        <textarea id="in-memo" rows="2"></textarea>
+      </div>
+      <button type="submit" class="btn-submit">記録する</button>
+    </form>
+  </section>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
