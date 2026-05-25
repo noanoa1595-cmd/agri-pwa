@@ -84,12 +84,11 @@ async function sendToSheet(sheetName, row, btn) {
   showStatus('送信中...', 'sending');
 
   try {
-    // no-corsのためレスポンスbodyは読めないが送信は成功する
-    await fetch(GAS_URL, {
-      method: 'POST',
+    // GASはPOSTをリダイレクト時にGETに変換するため、GETにpayloadを乗せる方式を採用
+    const payload = encodeURIComponent(JSON.stringify({ sheet: sheetName, row: row }));
+    await fetch(GAS_URL + '?payload=' + payload, {
+      method: 'GET',
       mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ sheet: sheetName, row: row }),
     });
 
     showToast('✅ 記録しました');
