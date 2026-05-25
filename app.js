@@ -84,11 +84,12 @@ async function sendToSheet(sheetName, row, btn) {
   showStatus('送信中...', 'sending');
 
   try {
-    // GASはPOSTをリダイレクト時にGETに変換するため、GETにpayloadを乗せる方式を採用
-    const payload = encodeURIComponent(JSON.stringify({ sheet: sheetName, row: row }));
-    await fetch(GAS_URL + '?payload=' + payload, {
-      method: 'GET',
+    // no-corsのためレスポンスbodyは読めないが送信は成功する
+    await fetch(GAS_URL, {
+      method: 'POST',
       mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sheet: sheetName, row: row }),
     });
 
     showToast('✅ 記録しました');
@@ -175,6 +176,9 @@ async function submitSoil(e) {
     parseFloat(val('sl-ec'))       || '',
     parseFloat(val('sl-moisture')) || '',
     parseFloat(val('sl-temp'))     || '',
+    parseFloat(val('sl-hardness')) || '',  // 土壌硬度(mm)
+    val('sl-aggregate'),                   // 団粒構造
+    val('sl-mtype'),                       // 測定種別
     val('sl-memo'),
   ];
   const ok = await sendToSheet('シート5：土壌管理', row, btn);

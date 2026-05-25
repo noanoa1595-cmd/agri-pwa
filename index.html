@@ -173,6 +173,26 @@
         <input type="number" id="sl-temp" step="0.1" placeholder="例：18.5">
       </div>
       <div class="field">
+        <label for="sl-hardness">土壌硬度（mm）</label>
+        <input type="number" id="sl-hardness" step="1" min="0" max="50" placeholder="例：18（貫入計使用時のみ）">
+      </div>
+      <div class="field">
+        <label for="sl-aggregate">団粒構造</label>
+        <select id="sl-aggregate">
+          <option value="">未評価</option>
+          <option value="良好">良好（握ると崩れる・指がスッと入る）</option>
+          <option value="普通">普通</option>
+          <option value="要改善">要改善（固い・粘土状・水はけ悪）</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="sl-mtype">測定種別</label>
+        <select id="sl-mtype">
+          <option value="日常点検">日常点検（簡易キット）</option>
+          <option value="土壌分析">土壌分析結果入力</option>
+        </select>
+      </div>
+      <div class="field">
         <label for="sl-memo">メモ</label>
         <textarea id="sl-memo" rows="2"></textarea>
       </div>
