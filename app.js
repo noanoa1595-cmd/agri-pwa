@@ -3,7 +3,7 @@
 // ============================================================
 
 // ★★★ GASをデプロイしたらここにURLを貼り付ける ★★★
-const GAS_URL = https://script.google.com/macros/s/AKfycbw66yLy8Vm3Ak4OCO1tXDPfnI9Xe2__lownEbwNjVB0qqZqcc-ckwhUGr9HYKCoeKoc/exec;
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbw66yLy8Vm3Ak4OCO1tXDPfnI9Xe2__lownEbwNjVB0qqZqcc-ckwhUGr9HYKCoeKoc/exec';
 
 // ============================================================
 // 初期化
